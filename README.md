@@ -34,7 +34,7 @@ Both core and user modules can be added/removed using attributes
 ## License and Author
 
 Author::      Alex Soban - Planbox Inc. (<soban@planbox.com>)  
-Copyright:: 2012, Alex Soban - Planbox Inc.
+Copyright:: 2012, Alex Soban - Planbox Inc.  
 Copyright:: 2012, Planbox Inc.
 
 The MIT License (MIT)

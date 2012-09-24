@@ -1,0 +1,5 @@
+limit_conn_zone $binary_remote_addr zone=http:<%= node["nginx"]["limit_zone_http"] %>;
+limit_conn_zone $binary_remote_addr zone=server:<%= node["nginx"]["limit_zone_server"] %>;
+limit_conn_zone $binary_remote_addr zone=reverseproxy:<%= node["nginx"]["limit_zone_revproxy"] %>;
+limit_conn_zone $binary_remote_addr zone=cgiproxy:<%= node["nginx"]["limit_zone_cgiproxy"] %>;
+limit_conn      http <%= node["nginx"]["limit_http"] %>;

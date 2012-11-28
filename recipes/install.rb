@@ -65,28 +65,3 @@ end
 bash "cp #{compile_path}/objs/nginx #{node['nginx']['binary_file']}" do
   code "cp #{compile_path}/objs/nginx #{node['nginx']['binary_file']}"
 end
-
-directory "#{node['nginx']['install_path']}/html" do
-  recursive true
-  mode      "0755"
-  action    :create
-end
-
-Dir.chdir("#{compile_path}/html") do
-  Dir.glob("*") do |filename|
-    source_file       = "#{compile_path}/html/#{filename}"
-    destination_file  = "#{node['nginx']['install_path']}/html/#{filename}"
-
-    if preserve source_file, destination_file
-      bash "cp #{source_file} #{destination_file}.default" do
-        code  "cp #{source_file} #{destination_file}.default"
-      end
-    else
-      bash "cp #{source_file} #{destination_file}" do
-        code  "cp #{source_file} #{destination_file}"
-      end
-    end
-
-  end
-end
-

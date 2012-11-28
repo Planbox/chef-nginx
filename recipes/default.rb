@@ -1,98 +1,147 @@
 # Install requirements
 #
-include_recipe "ark"
 include_recipe "nginx::dependencies"
+
+# Download package
+#
+include_recipe "nginx::source"
 
 # Download modules
 #
 include_recipe "nginx::modules"
-
+ 
 # Compile package
-include_recipe "nginx::source"
-
-# Create directories
 #
-bash "Nginx :: clear config directory" do
-  code "rm -fr #{node["nginx"]["conf_path"]}/*"
-end
-node["nginx"]["incl_path"]  = "#{node["nginx"]["conf_path"]}/conf.d"
-node["nginx"]["site_avl"]   = "#{node["nginx"]["conf_path"]}/sites-available"
-node["nginx"]["site_enl"]   = "#{node["nginx"]["conf_path"]}/sites-enabled"
+include_recipe "nginx::install"
 
-%w[conf_path pid_path log_path incl_path site_avl site_enl].each do |path|
-  directory node["nginx"][path] do
+# Daemon user (www-data)
+#
+group node[:nginx][:user] do
+  system  true
+  action  :create
+end
+user node[:nginx][:user] do
+  gid     node[:nginx][:user]
+  home    node[:nginx][:http_docs]
+  shell   "/bin/sh"
+  system  true
+  action  :create
+end
+
+# Daemon directories (run, log, ...)
+#
+node.set[:nginx][:sites_available_path] = "#{node[:nginx][:conf_path]}/sites-available"
+node.set[:nginx][:sites_enabled_path]   = "#{node[:nginx][:conf_path]}/sites-enabled"
+node.set[:nginx][:conf_path_main]   = "#{node[:nginx][:conf_path]}/conf.d"
+node.set[:nginx][:conf_path_extra]  = "#{node[:nginx][:conf_path]}/extra.d"
+%w[http_docs log_path pid_path spool_path].each do |path|
+  directory node[:nginx][path] do
     recursive true
-    owner     node["nginx"]["user"]
-    group     node["nginx"]["user"]
+    owner     node[:nginx][:user]
+    group     node[:nginx][:user]
     mode      "0755"
     action    :create
   end
 end
 
-# Create service
+%w[conf_path sites_available_path sites_enabled_path conf_path_main conf_path_extra].each do |path|
+  directory node[:nginx][path] do
+    recursive true
+    mode      "0755"
+    action    :create
+  end
+end
+
+node[:nginx][:spools].each do |(path, opts)|
+  directory "#{node[:nginx][:spool_path]}/#{path}" do
+    recursive true
+    owner     node[:nginx][:user]
+    group     node[:nginx][:user]
+    mode      "0755"
+    action    :create
+  end
+end
+
+# Startup script
 #
-template "Nginx :: install service" do
-  path    "/etc/init.d/nginx"
-  source  "nginx.init.erb"
-  owner   "root"
-  group   "root"
+template "/etc/init.d/nginx" do
+  source  "init.nginx.erb"
   mode    "0755"
 end
 
-service "Nginx :: enable service" do
-  service_name  "nginx"
-  supports      :start => true, :stop => true, :restart => true, :reload => true, :status => true
-  action        :enable
+# Service
+service "nginx" do
+  supports  :start => true, :stop => true, :status => true, :reload => true, :restart => true
+  action    :enable
 end
 
-# Nginx configuration file
+# Configuration file
 #
-template "Nginx :: configuration file" do
-  path    "#{node["nginx"]["conf_path"]}/nginx.conf"
+destination_file  = "#{node[:nginx][:conf_path]}/nginx.conf"
+if preserve false, destination_file
+  destination_file  = "#{destination_file}.default"
+end
+template destination_file do
   source  "nginx.conf.erb"
-  owner   node["nginx"]["user"]
-  group   node["nginx"]["user"]
   mode    "0644"
 end
 
-# Static configuration files
-#
-%w[fastcgi fastcgi_ssl logformats mimetypes].each do |path|
-  cookbook_file "Nginx :: configuration file (#{path})" do
-    path    "#{node["nginx"]["incl_path"]}/#{path}"
-    source  path
-    owner   node["nginx"]["user"]
-    group   node["nginx"]["user"]
-    mode    "0644"
-  end
-end
-
-# Dynamic configuration files
+# Configuration files main
 # 
-%w[buffer gzip limit timeout proxy].each do |path|
-  template "Nginx :: configuration file (#{path})" do
-    path    "#{node["nginx"]["incl_path"]}/#{path}"
-    source  "conf.#{path}.erb"
-    owner   node["nginx"]["user"]
-    group   node["nginx"]["user"]
+%w[buffer gzip limit proxy timeout].each do |filename|
+  destination_file  = "#{node[:nginx][:conf_path_main]}/#{filename}"
+  if preserve false, destination_file
+    destination_file  = "#{destination_file}.default"
+  end
+  template destination_file do
+    source  "conf.#{filename}.erb"
     mode    "0644"
   end
 end
 
-# Install nxdissite/nxensite
-#
-%w[nxensite nxdissite].each do |nxscript|
-  template "/usr/sbin/#{nxscript}" do
-    source  "#{nxscript}.erb"
-    owner   "root"
-    group   "root"
-    mode    "0755"
+# Configuration files static
+# 
+%w[fastcgi fastcgi_ssl logformats mimetypes].each do |filename|
+  destination_file  = "#{node[:nginx][:conf_path_main]}/#{filename}"
+  if preserve false, destination_file
+    destination_file  = "#{destination_file}.default"
+  end
+  cookbook_file destination_file do
+    source  filename
+    mode    "0644"
   end
 end
 
-# Restart/Reload
-#
-service "Nginx :: restart (start)" do
-  service_name  "nginx"
-  action        :restart
+# Configuration files extra
+# 
+%w[cross-domain-ajax cross-domain-fonts no-transform protect-system-files x-ua-compatible].each do |filename|
+  destination_file  = "#{node[:nginx][:conf_path_extra]}/#{filename}"
+  if preserve false, destination_file
+    destination_file  = "#{destination_file}.default"
+  end
+  cookbook_file destination_file do
+    source  filename
+    mode    "0644"
+  end
 end
+
+# Default site
+#
+destination_file  = "#{node[:nginx][:sites_available_path]}/000-default"
+if preserve false, destination_file
+  destination_file  = "#{destination_file}.default"
+end
+template destination_file do
+  source  "site.default.erb"
+  mode    "0644"
+end
+link "#{node[:nginx][:sites_enabled_path]}/000-default" do
+  to "#{node[:nginx][:sites_available_path]}/000-default"
+end
+
+# Restart service
+#
+service "nginx" do
+  action  :restart
+end
+

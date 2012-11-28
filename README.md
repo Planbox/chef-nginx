@@ -1,4 +1,4 @@
-Overview
+Overview [![Build Status](https://travis-ci.org/SobanVuex/chef-nginx.png)](https://travis-ci.org/SobanVuex/chef-nginx)
 ========
 
 Install Nginx and modules from source. Using the ''Ark'' cookbook to

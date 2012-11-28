@@ -45,7 +45,7 @@ bash "./configure --prefix=#{node['nginx']['install_path']}" do
     tar -zxf nginx-#{node['nginx']['version']}.tar.gz
     cd nginx-#{node['nginx']['version']}
     ./configure #{configure_flags}
-    #{node['nginx']['make_command']}
+    make
   BASH
 end
 

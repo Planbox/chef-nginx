@@ -1,60 +1,63 @@
-user                  <%= node["nginx"]["user"] %> <%= node["nginx"]["user"] %>;
-worker_processes      <%= node["nginx"]["worker_proc"] %>;
-worker_rlimit_nofile  <%= node["nginx"]["worker_rlimit"] %>;
-pid                   <%= node["nginx"]["pid_path"] %>/nginx.pid;
+# User must has rw access to htdocs
+#
+user  <%= node[:nginx][:user] %> <%= node[:nginx][:user] %>;
 
+# max_clients = worker_processes * worker_connections
+#
+worker_processes  <%= node[:nginx][:worker_proc] %>;
+
+# > worker_connections
+#
+worker_rlimit_nofile  <%= node[:nginx][:worker_rlimit] %>;
+
+# > 8000 * cpu_cores connections - hire a team of Sys Admins
+#
 events {
-  worker_connections  <%= node["nginx"]["worker_conn"] %>;
+    worker_connections  <%= node[:nginx][:worker_conn] %>;
 }
 
-http {
-  # Mime types
-  include       conf.d/mimetypes;
-  default_type  <%= node["nginx"]["default_type"] %>;
+# Deaemon, Error log
+#
+pid       <%= node[:nginx][:pid_path] %>/nginx.pid;
+error_log <%= node[:nginx][:log_path] %>/error.log;
 
-  # Buffer overflows
+http {
+
+  # Define all mime-types
+  #
+  include       conf.d/mimetypes;
+  default_type  <%= node[:nginx][:default_type] %>;
+
+  # Buffers
+  #
   include       conf.d/buffer;
 
   # Timeouts
+  #
   include       conf.d/timeout;
 
-  # Connection limits
+  # Limits
+  #
   include       conf.d/limit;
 
-  # Gzip compression
+  # Gzip
+  #
   include       conf.d/gzip;
 
-  # Logging
+  # Logs
+  #
   include       conf.d/logformats;
-  access_log    <%= node["nginx"]["log_path"] %>/access.log global;
-  error_log     <%= node["nginx"]["log_path"] %>/error.log;
+  access_log    <%= node[:nginx][:log_path] %>/access.log global;
 
   # Defaults
-  sendfile      on;
-  tcp_nopush    on;
-  tcp_nodelay   on;
-  server_tokens off;
+  #
+  index             <%= node[:nginx][:index].join " " %>;
+  sendfile          on;
+  tcp_nopush        on; # off may be better for long-poll
+  tcp_nodelay       off; # on may be better for long-poll
+  server_tokens     <%= node[:nginx][:server_tokens] %>;
 
-
-  # Default response
-  server {
-<% node["nginx"]["listen"].each do |interface| -%>
-    listen  <%= interface %>;
-<% end-%>
-
-<% if (node["nginx"]["block_referral_spam"]) -%>
-    # Block referral spam
-    if ($http_referer ~* (babes|forsale|girl|jewelry|love|nudit|organic|poker|porn|sex|teen)) {
-      return  403;
-    }
-<% end -%>
-
-    # This is a default response for an uncofigured domain, use sites-available/enabled
-    location / {
-      return  403;
-    }
-  }
-
-  # Enabled sites
-  include       sites-enabled/*;
+  # Include sites
+  #
+  include     sites-enabled/*;
 }

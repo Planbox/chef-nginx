@@ -9,7 +9,7 @@ include_recipe "nginx::source"
 # Download modules
 #
 include_recipe "nginx::modules"
- 
+
 # Compile package
 #
 include_recipe "nginx::install"
@@ -87,7 +87,7 @@ template destination_file do
 end
 
 # Configuration files main
-# 
+#
 %w[buffer gzip limit proxy timeout].each do |filename|
   destination_file  = "#{node[:nginx][:conf_path_main]}/#{filename}"
   if preserve false, destination_file
@@ -100,7 +100,7 @@ end
 end
 
 # Configuration files static
-# 
+#
 %w[fastcgi fastcgi_ssl logformats mimetypes].each do |filename|
   destination_file  = "#{node[:nginx][:conf_path_main]}/#{filename}"
   if preserve false, destination_file
@@ -113,7 +113,7 @@ end
 end
 
 # Configuration files extra
-# 
+#
 %w[cross-domain-ajax cross-domain-fonts no-transform protect-system-files x-ua-compatible].each do |filename|
   destination_file  = "#{node[:nginx][:conf_path_extra]}/#{filename}"
   if preserve false, destination_file

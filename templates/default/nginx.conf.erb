@@ -1,32 +1,32 @@
 # User must has rw access to htdocs
 #
-user  <%= node[:nginx][:user] %> <%= node[:nginx][:user] %>;
+user  <%= node['nginx']['user'] %> <%= node['nginx']['user'] %>;
 
 # max_clients = worker_processes * worker_connections
 #
-worker_processes  <%= node[:nginx][:worker_proc] %>;
+worker_processes  <%= node['nginx']['worker_proc'] %>;
 
 # > worker_connections
 #
-worker_rlimit_nofile  <%= node[:nginx][:worker_rlimit] %>;
+worker_rlimit_nofile  <%= node['nginx']['worker_rlimit'] %>;
 
 # > 8000 * cpu_cores connections - hire a team of Sys Admins
 #
 events {
-    worker_connections  <%= node[:nginx][:worker_conn] %>;
+    worker_connections  <%= node['nginx']['worker_conn'] %>;
 }
 
 # Deaemon, Error log
 #
-pid       <%= node[:nginx][:pid_path] %>/nginx.pid;
-error_log <%= node[:nginx][:log_path] %>/error.log;
+pid       <%= node['nginx']['pid_path'] %>/nginx.pid;
+error_log <%= node['nginx']['log_path'] %>/error.log;
 
 http {
 
   # Define all mime-types
   #
   include       conf.d/mimetypes;
-  default_type  <%= node[:nginx][:default_type] %>;
+  default_type  <%= node['nginx']['default_type'] %>;
 
   # Buffers
   #
@@ -47,15 +47,15 @@ http {
   # Logs
   #
   include       conf.d/logformats;
-  access_log    <%= node[:nginx][:log_path] %>/access.log global;
+  access_log    <%= node['nginx']['log_path'] %>/access.log global;
 
   # Defaults
   #
-  index             <%= node[:nginx][:index].join " " %>;
+  index             <%= node['nginx']['index'].join " " %>;
   sendfile          on;
   tcp_nopush        on; # off may be better for long-poll
   tcp_nodelay       off; # on may be better for long-poll
-  server_tokens     <%= node[:nginx][:server_tokens] %>;
+  server_tokens     <%= node['nginx']['server_tokens'] %>;
 
   # Include sites
   #

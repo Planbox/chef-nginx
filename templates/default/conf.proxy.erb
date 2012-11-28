@@ -9,7 +9,7 @@ proxy_set_header  X-Forwarded-Proto $scheme;
 proxy_set_header  X-Ssl-Proto       $ssl_protocol;
 proxy_set_header  X-Accel-Enabled   yes;
 
-proxy_connect_timeout <%= node[:nginx][:proxy_connect_timeout] %>;
-proxy_send_timeout    <%= node[:nginx][:proxy_send_timeout] %>;
-proxy_read_timeout    <%= node[:nginx][:proxy_read_timeout] %>;
-proxy_buffers         <%= node[:nginx][:proxy_buffers] %>;
+proxy_connect_timeout <%= node['nginx']['proxy_connect_timeout'] %>;
+proxy_send_timeout    <%= node['nginx']['proxy_send_timeout'] %>;
+proxy_read_timeout    <%= node['nginx']['proxy_read_timeout'] %>;
+proxy_buffers         <%= node['nginx']['proxy_buffers'] %>;

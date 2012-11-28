@@ -13,15 +13,15 @@
 INIT_VERBOSE=yes
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/opt/bin
-USER=<%= node[:nginx][:user] %>
+USER=<%= node['nginx']['user'] %>
 NAME=nginx
-DESC="Nginx Web Server (v<%= node[:nginx][:version] %>)"
+DESC="Nginx Web Server (v<%= node['nginx']['version'] %>)"
 
-PIDDIR=<%= node[:nginx][:pid_path] %>
-LOGDIR=<%= node[:nginx][:log_path] %>
-CONFDIR=<%= node[:nginx][:conf_path] %>
+PIDDIR=<%= node['nginx']['pid_path'] %>
+LOGDIR=<%= node['nginx']['log_path'] %>
+CONFDIR=<%= node['nginx']['conf_path'] %>
 
-DAEMON=<%= node[:nginx][:binary_file] %>
+DAEMON=<%= node['nginx']['binary_file'] %>
 PIDFILE=$PIDDIR/$NAME.pid
 CONFFILE=$CONFDIR/$NAME.conf
 

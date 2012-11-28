@@ -1,6 +1,6 @@
 # Timeout
 #
-client_body_timeout   <%= node[:nginx][:client_body_timeout] %>;
-client_header_timeout <%= node[:nginx][:client_header_timeout] %>;
-keepalive_timeout     <%= node[:nginx][:keepalive_timeout][0] %> <%= node[:nginx][:keepalive_timeout][1] %>;
-send_timeout          <%= node[:nginx][:send_timeout] %>;
+client_body_timeout   <%= node['nginx']['client_body_timeout'] %>;
+client_header_timeout <%= node['nginx']['client_header_timeout'] %>;
+keepalive_timeout     <%= node['nginx']['keepalive_timeout'][0] %> <%= node['nginx']['keepalive_timeout'][1] %>;
+send_timeout          <%= node['nginx']['send_timeout'] %>;

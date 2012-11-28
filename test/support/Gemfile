@@ -1,4 +1,4 @@
 source  :rubygems
 gem     "rake"
-gen     "foodcritic"
+gem     "foodcritic"
 gem     "chef", "~> 10.12.0"

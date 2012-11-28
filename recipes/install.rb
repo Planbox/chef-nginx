@@ -4,7 +4,7 @@ node.set[:nginx][:install_path] = "#{node[:nginx][:prefix_path]}/nginx-#{node[:n
 node.set[:nginx][:binary_file]  = "#{node[:nginx][:install_path]}/sbin/nginx"
 
 # Make options
-# 
+#
 node.set[:nginx][:configure_flags] = [
   "--prefix=#{node[:nginx][:install_path]}",
   "--sbin-path=#{node[:nginx][:sbin_path]}",
@@ -44,11 +44,10 @@ bash "./configure --prefix=#{node[:nginx][:install_path]}" do
   code <<-BASH
     tar -zxf nginx-#{node[:nginx][:version]}.tar.gz
     cd nginx-#{node[:nginx][:version]}
-    #./configure #{configure_flags}
+    ./configure #{configure_flags}
     #{node[:nginx][:make_command]}
   BASH
 end
-
 
 # Manual install, because of file mess
 #
@@ -90,6 +89,4 @@ Dir.chdir("#{compile_path}/html") do
 
   end
 end
-
-
 

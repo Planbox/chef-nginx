@@ -30,10 +30,10 @@ end
 
 # Daemon directories (run, log, ...)
 #
-node.set[:nginx][:sites_available_path] = "#{node['nginx']['conf_path']}/sites-available"
-node.set[:nginx][:sites_enabled_path]   = "#{node['nginx']['conf_path']}/sites-enabled"
-node.set[:nginx][:conf_path_main]   = "#{node['nginx']['conf_path']}/conf.d"
-node.set[:nginx][:conf_path_extra]  = "#{node['nginx']['conf_path']}/extra.d"
+node.set['nginx']['sites_available_path'] = "#{node['nginx']['conf_path']}/sites-available"
+node.set['nginx']['sites_enabled_path']   = "#{node['nginx']['conf_path']}/sites-enabled"
+node.set['nginx']['conf_path_main']   = "#{node['nginx']['conf_path']}/conf.d"
+node.set['nginx']['conf_path_extra']  = "#{node['nginx']['conf_path']}/extra.d"
 %w[http_docs log_path pid_path spool_path].each do |path|
   directory node['nginx'][path] do
     recursive true

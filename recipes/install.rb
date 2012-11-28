@@ -1,11 +1,11 @@
 # Options
 #
-node.set[:nginx][:install_path] = "#{node['nginx']['prefix_path']}/nginx-#{node['nginx']['version']}"
-node.set[:nginx][:binary_file]  = "#{node['nginx']['install_path']}/sbin/nginx"
+node.set['nginx']['install_path'] = "#{node['nginx']['prefix_path']}/nginx-#{node['nginx']['version']}"
+node.set['nginx']['binary_file']  = "#{node['nginx']['install_path']}/sbin/nginx"
 
 # Make options
 #
-node.set[:nginx][:configure_flags] = [
+node.set['nginx']['configure_flags'] = [
   "--prefix=#{node['nginx']['install_path']}",
   "--sbin-path=#{node['nginx']['sbin_path']}",
   "--pid-path=#{node['nginx']['pid_path']}/nginx.pid",

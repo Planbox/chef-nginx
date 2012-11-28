@@ -1,17 +1,18 @@
-Overview [![Build Status](https://travis-ci.org/SobanVuex/chef-nginx.png)](https://travis-ci.org/SobanVuex/chef-nginx)
-========
+[![Build Status](https://travis-ci.org/SobanVuex/chef-nginx.png)](https://travis-ci.org/SobanVuex/chef-nginx)
 
-Install Nginx and modules from source. Using the ''Ark'' cookbook to
-manage actions.
+What does it do
+---------------
+
+Install Nginx and modules from source using @opscode/chef
 
 Attributes
-==========
+----------
 
 You can customize almost all nginx configurations using attributes.
 Sample json for chef-solo is provided
 
 Modules
-=======
+-------
 
 Both core and user modules can be added/removed using attributes
 
@@ -23,19 +24,28 @@ Both core and user modules can be added/removed using attributes
       },
     ....
 
-**User modules** (Note the array depth, also works for modules available on GitHub)
+**User modules** [identifier, [source, version]]
 
     ...
       "nginx": {
-        "user_modules": [["redis2-nginx-module", ["agentzh/redis2-nginx-module", "v0.09"]]]
+        "user_modules": [["devel-kit", ["https://github.com/simpl/ngx_devel_kit.git", "master"]]]
       },
     ....
 
-## License and Author
+TODO
+----
 
-Author::      Alex Soban - Planbox Inc. (<soban@planbox.com>)  
-Copyright:: 2012, Alex Soban - Planbox Inc.  
-Copyright:: 2012, Planbox Inc.
+- Sleep (4am)
+- Provide attributes for more nginx directives and modules
+
+If you have ideas, share them!
+
+License and Author
+------------------
+
+Author: Alex Soban - Planbox Inc. (<soban@planbox.com>)  
+Copyright: 2012, Alex Soban - Planbox Inc.  
+Copyright: 2012, Planbox Inc.
 
 The MIT License (MIT)
 

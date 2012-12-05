@@ -1,8 +1,9 @@
 # Package information
 #
-default['nginx']['version']         = "1.2.5"
-default['nginx']['source']          = "http://nginx.org/download"
-default['nginx']['preserve_files']  = true
+default['nginx']['version']           = "1.2.5"
+default['nginx']['source']            = "http://nginx.org/download"
+default['nginx']['preserve_files']    = true
+default['nginx']['suppress_install']  = false
 
 default['nginx']['core_modules']  = [
   "--without-http_memcached_module",

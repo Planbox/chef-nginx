@@ -47,6 +47,7 @@ bash "./configure --prefix=#{node['nginx']['install_path']}" do
     ./configure #{configure_flags}
     make
   BASH
+  not_if { node['nginx']['suppress_install'] }
 end
 
 # Manual install, because of file mess

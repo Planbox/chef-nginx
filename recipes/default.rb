@@ -138,6 +138,16 @@ end
 link "#{node['nginx']['sites_enabled_path']}/000-default" do
   to "#{node['nginx']['sites_available_path']}/000-default"
 end
+destination_file  = "#{node['nginx']['http_docs']}/localhost/index.html"
+if preserve false, destination_file
+  destination_file  = "#{destination_file}.default"
+end
+cookbook_file destination_file do
+  source  "index.html"
+  owner   node['nginx']['user']
+  group   node['nginx']['user']
+  mode    "0644"
+end
 
 # Restart service
 #

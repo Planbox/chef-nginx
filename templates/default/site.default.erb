@@ -1,9 +1,37 @@
 # Default server
 #
 server {
+  server_name <% ['nginx']['server_names'].join " " %>;
+  set $server <% ['nginx']['server_name_nice'] %>;
+
 <% node['nginx']['listen'].each do |interface| -%>
   listen  <%= interface %>;
 <% end-%>
+
+  # Use $server to make a always/never www or any other persistent domain for this server
+  #
+  # if ($host != $server) {
+    # rewrite ^(.*) $scheme://$server$1 last;
+  # }
+
+  # SSL certificate location for HTTPS connections
+  #
+  # ssl_certificate     /path/to/server.crt;
+  # ssl_certificate_key /path/to/server.key;
+
+  # SSL forced
+  #
+  # if ($ssl_protocol = "") {
+      # rewrite ^(.*) https://$server_name$1 permanent;
+  # }
+
+  # Google - Webmasters verification
+  #
+  # location /googleCODE.html {
+    # echo  "google-site-verification: googleCODE.html";
+  # }
+
+  root    <% ['nginx']['http_docs'] %>/localhost/;
 
 <% if node['nginx']['block_referral_spam'] -%>
   # Block referral spam
@@ -12,12 +40,6 @@ server {
     return  403;
   }
 <% end -%>
-
-  # This is a default response for an uncofigured domain, use sites-available/enabled
-  #
-  location  / {
-    return 404;
-  }
 
   # Security
   #

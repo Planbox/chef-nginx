@@ -51,7 +51,7 @@ default['nginx']['spools'] = [
 
 # Configuration
 #
-default['nginx']['worker_processes']      = (node.cpu.total.to_i * 2)
+default['nginx']['worker_processes']      = (node['cpu']['total'].to_i * 2)
 default['nginx']['worker_connections']    = 18000
 default['nginx']['worker_rlimit_nofile']  = 20000
 

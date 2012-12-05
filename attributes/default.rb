@@ -51,9 +51,9 @@ default['nginx']['spools'] = [
 
 # Configuration
 #
-default['nginx']['worker_proc']   = 8
-default['nginx']['worker_rlimit'] = 8192
-default['nginx']['worker_conn']   = 16384
+default['nginx']['worker_processes']      = (node.cpu.total.to_i * 2)
+default['nginx']['worker_connections']    = 18000
+default['nginx']['worker_rlimit_nofile']  = 20000
 
 default['nginx']['default_type']        = "text/plain"
 default['nginx']['index']               = ["index.html", "index.php"]

@@ -4,16 +4,16 @@ user  <%= node['nginx']['user'] %> <%= node['nginx']['user'] %>;
 
 # max_clients = worker_processes * worker_connections
 #
-worker_processes  <%= node['nginx']['worker_proc'] %>;
+worker_processes  <%= node['nginx']['worker_processes'] %>;
 
 # > worker_connections
 #
-worker_rlimit_nofile  <%= node['nginx']['worker_rlimit'] %>;
+worker_rlimit_nofile  <%= node['nginx']['worker_rlimit_nofile'] %>;
 
 # > 8000 * cpu_cores connections - hire a team of Sys Admins
 #
 events {
-    worker_connections  <%= node['nginx']['worker_conn'] %>;
+    worker_connections  <%= node['nginx']['worker_connections'] %>;
 }
 
 # Deaemon, Error log

@@ -34,7 +34,8 @@ node.set['nginx']['sites_available_path'] = "#{node['nginx']['conf_path']}/sites
 node.set['nginx']['sites_enabled_path']   = "#{node['nginx']['conf_path']}/sites-enabled"
 node.set['nginx']['conf_path_main']   = "#{node['nginx']['conf_path']}/conf.d"
 node.set['nginx']['conf_path_extra']  = "#{node['nginx']['conf_path']}/extra.d"
-%w[http_docs log_path pid_path spool_path].each do |path|
+node.set['nginx']['default_site']  = "#{node['nginx']['http_docs']}/localhost"
+%w[http_docs default_site log_path pid_path spool_path].each do |path|
   directory node['nginx'][path] do
     recursive true
     owner     node['nginx']['user']

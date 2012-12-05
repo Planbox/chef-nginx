@@ -1,8 +1,8 @@
 # Default server
 #
 server {
-  server_name <%= ['nginx']['server_names'].join " " %>;
-  set $server <%= ['nginx']['server_name_nice'] %>;
+  server_name <%= node['nginx']['server_names'].join " " %>;
+  set $server <%= node['nginx']['server_name_nice'] %>;
 
 <% node['nginx']['listen'].each do |interface| -%>
   listen  <%= interface %>;
@@ -31,7 +31,7 @@ server {
     # echo  "google-site-verification: googleCODE.html";
   # }
 
-  root    <%= ['nginx']['http_docs'] %>/localhost/;
+  root    <%= node['nginx']['http_docs'] %>/localhost/;
 
 <% if node['nginx']['block_referral_spam'] -%>
   # Block referral spam

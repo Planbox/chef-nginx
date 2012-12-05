@@ -16,16 +16,16 @@ default['nginx']['core_modules']  = [
   "--with-http_secure_link_module"
 ]
 default['nginx']['user_modules']  = [
-  ["devel-kit", ["https://github.com/simpl/ngx_devel_kit.git", "master"]],
-  ["set-misc", ["https://github.com/agentzh/set-misc-nginx-module.git", "master"]],
-  ["chunkin", ["https://github.com/agentzh/chunkin-nginx-module.git", "master"]],
-  ["echo", ["https://github.com/agentzh/echo-nginx-module.git", "master"]],
-  ["headers-more", ["https://github.com/agentzh/headers-more-nginx-module.git", "v0.19"]],
-  ["lua", ["https://github.com/chaoslawful/lua-nginx-module.git", "v0.7.5"]],
-  ["push-stream", ["https://github.com/wandenberg/nginx-push-stream-module.git", "master"]],
-  ["redis2", ["https://github.com/agentzh/redis2-nginx-module.git", "v0.09"]],
-  ["upload-progress", ["https://github.com/masterzen/nginx-upload-progress-module.git", "v0.9.0"]],
-  ["upstream-fair", ["https://github.com/gnosek/nginx-upstream-fair.git", "master"]]
+  ["devel-kit", ["https://github.com/simpl/ngx_devel_kit.git", "master"], []],
+  ["set-misc", ["https://github.com/agentzh/set-misc-nginx-module.git", "master"], []],
+  ["chunkin", ["https://github.com/agentzh/chunkin-nginx-module.git", "master"], []],
+  ["echo", ["https://github.com/agentzh/echo-nginx-module.git", "master"], []],
+  ["headers-more", ["https://github.com/agentzh/headers-more-nginx-module.git", "v0.19"], []],
+  ["lua", ["https://github.com/chaoslawful/lua-nginx-module.git", "v0.7.5"], []],
+  ["push-stream", ["https://github.com/wandenberg/nginx-push-stream-module.git", "master"], []],
+  ["redis2", ["https://github.com/agentzh/redis2-nginx-module.git", "v0.09"], []],
+  ["upload-progress", ["https://github.com/masterzen/nginx-upload-progress-module.git", "v0.9.0"], []],
+  ["upstream-fair", ["https://github.com/gnosek/nginx-upstream-fair.git", "master"], []]
 ]
 
 #] Paths
@@ -62,7 +62,9 @@ default['nginx']['tcp_nodelay']         = "off"
 default['nginx']['server_tokens']       = "off"
 default['nginx']['block_referral_spam'] = true
 
-default['nginx']['listen']  = ["80 default_server", "443 ssl"]
+default['nginx']['listen']            = ["80 default_server", "443 ssl"]
+default['nginx']['server_names']      = ["localhost"]
+default['nginx']['server_name_nice']  = "localhost"
 
 default['nginx']['client_body_buffer_size']     = "1m"
 default['nginx']['client_header_buffer_size']   = "4k"

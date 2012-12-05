@@ -9,7 +9,6 @@ packages = value_for_platform(
     "libpcre3-dev",
     "libssl-dev",
     "zlib1g-dev",
-    "libluajit-5.1-dev",
     "libgeoip-dev"
   ]
 )

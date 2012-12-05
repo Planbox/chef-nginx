@@ -21,7 +21,7 @@ default['nginx']['user_modules']  = [
   ["chunkin", ["https://github.com/agentzh/chunkin-nginx-module.git", "master"], []],
   ["echo", ["https://github.com/agentzh/echo-nginx-module.git", "master"], []],
   ["headers-more", ["https://github.com/agentzh/headers-more-nginx-module.git", "v0.19"], []],
-  ["lua", ["https://github.com/chaoslawful/lua-nginx-module.git", "v0.7.5"], []],
+  ["lua", ["https://github.com/chaoslawful/lua-nginx-module.git", "v0.7.5"], ["libluajit-5.1-dev"]],
   ["push-stream", ["https://github.com/wandenberg/nginx-push-stream-module.git", "master"], []],
   ["redis2", ["https://github.com/agentzh/redis2-nginx-module.git", "v0.09"], []],
   ["upload-progress", ["https://github.com/masterzen/nginx-upload-progress-module.git", "v0.9.0"], []],

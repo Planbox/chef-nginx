@@ -51,13 +51,13 @@ http {
 
   # Defaults
   #
-  index             <%= node['nginx']['index'].join " " %>;
-  sendfile          on;
-  tcp_nopush        on; # off may be better for long-poll
-  tcp_nodelay       off; # on may be better for long-poll
-  server_tokens     <%= node['nginx']['server_tokens'] %>;
+  index         <%= node['nginx']['index'].join " " %>;
+  sendfile      <%= node['nginx']['sendfile'] %>;
+  tcp_nopush    <%= node['nginx']['tcp_nopush'] %>; # off may be better for long-poll
+  tcp_nodelay   <%= node['nginx']['tcp_nodelay'] %>; # on may be better for long-poll
+  server_tokens <%= node['nginx']['server_tokens'] %>;
 
   # Include sites
   #
-  include     sites-enabled/*;
+  include       sites-enabled/*;
 }

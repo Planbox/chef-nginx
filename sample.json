@@ -1,11 +1,6 @@
 {
-    "prefix_path": "/opt",
-    "binary_path": "/opt/bin",
-    "library_path": "/opt/lib",
-    "package_path": "/opt/pkg",
-    "nginx": {
-        "user": "www-data",
-        "conf_path": "/opt/conf/nginx"
-    },
-    "run_list": ["recipe[nginx]"]
+  "nginx" : {
+    "preserve_files": false
+  },
+  "run_list": ["recipe[nginx]"]
 }
